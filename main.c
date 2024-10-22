@@ -1,34 +1,35 @@
-#include <avr/io.h>   //includes basic avr functions like DDRB and PORTB and etc...
-#include <util/delay.h>   //include the delay function measured in miliseconds
+#include <avr/io.h>   //inclui funçoes basicas para o gerenciamento de portas e registros
+#include <util/delay.h>   //inclui a funçao de delay, dada em milissegundos
 
-#define F_CPU 16000000    //defines the atmega328p frequency as 16mhz (16 million hertz)
-#define delaytime 20000   //defines the delay time at 20000 miliseconds bc my arduino is broken lol
+#define F_CPU 16000000    //define a frequencia da cpu para 16000000 de hz, equivalente a 16mhz
+#define delaytime 20000   /*define o tempo de delay como 20000ms, note que isso é equivalente a 2 minutos
+devido a problemas no meu microcontrolador*/
 
 void PORTT2 (void);
 void PORTT3 (void);
 
 int main (void)
 {
-    DDRB = (1 << PB2) | (1 << PB3);   /*sets the portb2 and portb3 as inputs using
+    DDRB = (1 << PB2) | (1 << PB3);   /*seleciona a portb2 e portb3 como entrada usando
                                        data direction register (DDRB)*/
     while(1)
     {
-       PORTT2();                 //include the PORTT2 function. We can find it below
-       PORTT3();                 //include the PORTT3 function. We can fint it below
+       PORTT2();                 //inclui a funçao PORTT2 que pode ser vista abaixo
+       PORTT3();                 //inclui a funçao PORTT3 que pode ser vista abaixo
     }
     return 0;
 }
 
 void PORTT2 (void)
 {
-    PORTB = PORTB | (1 << PB2);      //since ddr is set to B registers, we turn portb2 in a output
-    _delay_ms(delaytime);            //applies the 20000ms delay time to the led
-    PORTB = (0 << PB2);              //unset portb2 making it equals to 0
-    _delay_ms(delaytime);            //wait again
+    PORTB = PORTB | (1 << PB2);      //ja que o DDRB esta selecionada para a porta B, ligamos a portb2 usando operadores logicos
+    _delay_ms(delaytime);            //aplica o delaytime ao led
+    PORTB = (0 << PB2);              //usa operadores logicos para retirar a seleçao da portb2 e desliga-la
+    _delay_ms(delaytime);            //aplica novamente o delay ao led
    
 }
 
-void PORTT3 (void)                   //same shit as PORTT2 but setting and unsetting portb3 this time
+void PORTT3 (void)                   //faz o mesmo que a funçao PORTT2, mas com a portb3
 {
     PORTB = PORTB | (1 << PB3); 
     _delay_ms(delaytime);
